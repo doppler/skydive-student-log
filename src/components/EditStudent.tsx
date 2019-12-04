@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useRouteMatch } from "react-router-dom"
 import { useQuery } from "graphql-hooks"
 
@@ -57,10 +57,33 @@ type StudentProps = {
 }
 
 const EditStudentForm: React.FC<StudentProps> = (props: StudentProps) => {
-  const { student } = props
+  const [student, setStudent] = useState(props.student);
+
+  const changeInputValue = (event: React.FormEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget
+    setStudent(prevState => { return {...prevState, [name]: value} })
+  }
+
+  const saveStudent = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("submitted", student)
+  }
+
   return (
-    <div>
-      <code>{JSON.stringify(student, null, 2)}</code>
-    </div>
+    <form onSubmit={saveStudent}>
+      <div>
+        <input autoComplete="off" onChange={changeInputValue} name="name" value={student.name} placeholder="Full Name" required />
+      </div>
+      <div>
+        <input autoComplete="off" onChange={changeInputValue} name="email" value={student.email} placeholder="email@domain.tld" required />
+      </div>
+      <div>
+        <input autoComplete="off" onChange={changeInputValue} name="phone" value={student.phone} placeholder="123-456-7890" required />
+      </div>
+      <div>
+        <input autoComplete="off" onChange={changeInputValue} name="hometown" value={student.hometown} placeholder="Hometown, ST" required />
+      </div>
+      <button type="submit">Save</button>
+    </form>
   ) 
 }
