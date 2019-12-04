@@ -7,9 +7,16 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
+      "name": "Chromium on Linux",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}",
+      "runtimeExecutable": "/snap/bin/chromium",
+      "runtimeArgs": [
+        "--new-window",
+        "--user-data-dir=/tmp/chrome-debug",
+        "--remote-debugging-port=9222",
+        "--disable-background-networking"
+      ]
     }
   ]
 }
