@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "graphql-hooks";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 type Student = {
   id: number;
@@ -29,6 +29,7 @@ const ALL_STUDENTS = `query MyQuery {
 const ListStudents: React.FC = () => {
   const { loading, error, data } = useQuery(ALL_STUDENTS);
   const history = useHistory();
+  const match = useRouteMatch();
 
   if (loading) return <div>Loading...</div>;
   if (error) {
@@ -37,6 +38,7 @@ const ListStudents: React.FC = () => {
   }
   return (
     <div>
+      <button onClick={() => history.push(`${match.path}/new`)}>Add Student</button>
       <table>
         <thead>
           <tr>

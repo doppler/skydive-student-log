@@ -1,11 +1,12 @@
 import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import { useQuery } from "graphql-hooks";
 
-const fetchStudentQuery = (id: number) => `
+const fetchStudentAndJumpsQuery = (id: number) => `
   query fetchStudentQuery {
     __typename
     student(id: ${id}) {
+      id
       email
       hometown
       name
@@ -33,11 +34,12 @@ const fetchStudentQuery = (id: number) => `
   }`;
 
 const ShowStudent: React.FC = () => {
+  const match = useRouteMatch();
   const { params } = useRouteMatch();
+  const history = useHistory();
   const { loading, error, data } = useQuery(
-    fetchStudentQuery(params.studentId)
+    fetchStudentAndJumpsQuery(params.studentId)
   );
-
   if (loading) return <div>Loading...</div>;
   if (error) {
     console.error(error);
@@ -49,6 +51,7 @@ const ShowStudent: React.FC = () => {
   }
   return (
     <div>
+      <button onClick={() => history.push(`${match.url}/edit`)}>Edit Student</button>
       <code>{JSON.stringify(data, null, 2)}</code>
     </div>
   );
