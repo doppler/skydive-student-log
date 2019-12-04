@@ -1,0 +1,2442 @@
+type Aircraft implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  name: String!
+
+  """Reads and enables pagination through a set of `LocationAircraft`."""
+  locationAircrafts(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `LocationAircraft`."""
+    orderBy: [LocationAircraftsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LocationAircraftCondition
+  ): LocationAircraftsConnection!
+
+  """Reads and enables pagination through a set of `Jump`."""
+  jumps(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Jump`."""
+    orderBy: [JumpsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: JumpCondition
+  ): JumpsConnection!
+}
+
+"""
+A condition to be used against `Aircraft` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input AircraftCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+}
+
+"""An input for mutations affecting `Aircraft`"""
+input AircraftInput {
+  id: Int
+  name: String!
+}
+
+"""
+Represents an update to a `Aircraft`. Fields that are set will be updated.
+"""
+input AircraftPatch {
+  id: Int
+  name: String
+}
+
+"""A connection to a list of `Aircraft` values."""
+type AircraftsConnection {
+  """A list of `Aircraft` objects."""
+  nodes: [Aircraft!]!
+
+  """
+  A list of edges which contains the `Aircraft` and cursor to aid in pagination.
+  """
+  edges: [AircraftsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Aircraft` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Aircraft` edge in the connection."""
+type AircraftsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Aircraft` at the end of the edge."""
+  node: Aircraft!
+}
+
+"""Methods to use when ordering `Aircraft`."""
+enum AircraftsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""All input for the create `Aircraft` mutation."""
+input CreateAircraftInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Aircraft` to be created by this mutation."""
+  aircraft: AircraftInput!
+}
+
+"""The output of our create `Aircraft` mutation."""
+type CreateAircraftPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Aircraft` that was created by this mutation."""
+  aircraft: Aircraft
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Aircraft`. May be used by Relay 1."""
+  aircraftEdge(
+    """The method to use when ordering `Aircraft`."""
+    orderBy: [AircraftsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AircraftsEdge
+}
+
+"""All input for the create `Instructor` mutation."""
+input CreateInstructorInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Instructor` to be created by this mutation."""
+  instructor: InstructorInput!
+}
+
+"""All input for the create `InstructorLocation` mutation."""
+input CreateInstructorLocationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `InstructorLocation` to be created by this mutation."""
+  instructorLocation: InstructorLocationInput!
+}
+
+"""The output of our create `InstructorLocation` mutation."""
+type CreateInstructorLocationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `InstructorLocation` that was created by this mutation."""
+  instructorLocation: InstructorLocation
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """
+  Reads a single `Instructor` that is related to this `InstructorLocation`.
+  """
+  instructor: Instructor
+
+  """
+  Reads a single `Location` that is related to this `InstructorLocation`.
+  """
+  location: Location
+
+  """An edge for our `InstructorLocation`. May be used by Relay 1."""
+  instructorLocationEdge(
+    """The method to use when ordering `InstructorLocation`."""
+    orderBy: [InstructorLocationsOrderBy!] = [NATURAL]
+  ): InstructorLocationsEdge
+}
+
+"""The output of our create `Instructor` mutation."""
+type CreateInstructorPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Instructor` that was created by this mutation."""
+  instructor: Instructor
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Instructor`. May be used by Relay 1."""
+  instructorEdge(
+    """The method to use when ordering `Instructor`."""
+    orderBy: [InstructorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): InstructorsEdge
+}
+
+"""All input for the create `Jump` mutation."""
+input CreateJumpInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Jump` to be created by this mutation."""
+  jump: JumpInput!
+}
+
+"""The output of our create `Jump` mutation."""
+type CreateJumpPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Jump` that was created by this mutation."""
+  jump: Jump
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Student` that is related to this `Jump`."""
+  student: Student
+
+  """Reads a single `Instructor` that is related to this `Jump`."""
+  instructor: Instructor
+
+  """Reads a single `Location` that is related to this `Jump`."""
+  location: Location
+
+  """Reads a single `Aircraft` that is related to this `Jump`."""
+  aircraft: Aircraft
+
+  """An edge for our `Jump`. May be used by Relay 1."""
+  jumpEdge(
+    """The method to use when ordering `Jump`."""
+    orderBy: [JumpsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): JumpsEdge
+}
+
+"""All input for the create `LocationAircraft` mutation."""
+input CreateLocationAircraftInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `LocationAircraft` to be created by this mutation."""
+  locationAircraft: LocationAircraftInput!
+}
+
+"""The output of our create `LocationAircraft` mutation."""
+type CreateLocationAircraftPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `LocationAircraft` that was created by this mutation."""
+  locationAircraft: LocationAircraft
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Location` that is related to this `LocationAircraft`."""
+  location: Location
+
+  """Reads a single `Aircraft` that is related to this `LocationAircraft`."""
+  aircraft: Aircraft
+
+  """An edge for our `LocationAircraft`. May be used by Relay 1."""
+  locationAircraftEdge(
+    """The method to use when ordering `LocationAircraft`."""
+    orderBy: [LocationAircraftsOrderBy!] = [NATURAL]
+  ): LocationAircraftsEdge
+}
+
+"""All input for the create `Location` mutation."""
+input CreateLocationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Location` to be created by this mutation."""
+  location: LocationInput!
+}
+
+"""The output of our create `Location` mutation."""
+type CreateLocationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Location` that was created by this mutation."""
+  location: Location
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Location`. May be used by Relay 1."""
+  locationEdge(
+    """The method to use when ordering `Location`."""
+    orderBy: [LocationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LocationsEdge
+}
+
+"""All input for the create `Pgmigration` mutation."""
+input CreatePgmigrationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Pgmigration` to be created by this mutation."""
+  pgmigration: PgmigrationInput!
+}
+
+"""The output of our create `Pgmigration` mutation."""
+type CreatePgmigrationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Pgmigration` that was created by this mutation."""
+  pgmigration: Pgmigration
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Pgmigration`. May be used by Relay 1."""
+  pgmigrationEdge(
+    """The method to use when ordering `Pgmigration`."""
+    orderBy: [PgmigrationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PgmigrationsEdge
+}
+
+"""All input for the create `Student` mutation."""
+input CreateStudentInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Student` to be created by this mutation."""
+  student: StudentInput!
+}
+
+"""The output of our create `Student` mutation."""
+type CreateStudentPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Student` that was created by this mutation."""
+  student: Student
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Student`. May be used by Relay 1."""
+  studentEdge(
+    """The method to use when ordering `Student`."""
+    orderBy: [StudentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): StudentsEdge
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+"""
+scalar Datetime
+
+"""All input for the `deleteAircraftByNodeId` mutation."""
+input DeleteAircraftByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Aircraft` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteAircraft` mutation."""
+input DeleteAircraftInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""The output of our delete `Aircraft` mutation."""
+type DeleteAircraftPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Aircraft` that was deleted by this mutation."""
+  aircraft: Aircraft
+  deletedAircraftNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Aircraft`. May be used by Relay 1."""
+  aircraftEdge(
+    """The method to use when ordering `Aircraft`."""
+    orderBy: [AircraftsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AircraftsEdge
+}
+
+"""All input for the `deleteInstructorByNodeId` mutation."""
+input DeleteInstructorByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Instructor` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteInstructor` mutation."""
+input DeleteInstructorInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""The output of our delete `Instructor` mutation."""
+type DeleteInstructorPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Instructor` that was deleted by this mutation."""
+  instructor: Instructor
+  deletedInstructorNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Instructor`. May be used by Relay 1."""
+  instructorEdge(
+    """The method to use when ordering `Instructor`."""
+    orderBy: [InstructorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): InstructorsEdge
+}
+
+"""All input for the `deleteJumpByNodeId` mutation."""
+input DeleteJumpByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Jump` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteJump` mutation."""
+input DeleteJumpInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""The output of our delete `Jump` mutation."""
+type DeleteJumpPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Jump` that was deleted by this mutation."""
+  jump: Jump
+  deletedJumpNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Student` that is related to this `Jump`."""
+  student: Student
+
+  """Reads a single `Instructor` that is related to this `Jump`."""
+  instructor: Instructor
+
+  """Reads a single `Location` that is related to this `Jump`."""
+  location: Location
+
+  """Reads a single `Aircraft` that is related to this `Jump`."""
+  aircraft: Aircraft
+
+  """An edge for our `Jump`. May be used by Relay 1."""
+  jumpEdge(
+    """The method to use when ordering `Jump`."""
+    orderBy: [JumpsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): JumpsEdge
+}
+
+"""All input for the `deleteLocationByNodeId` mutation."""
+input DeleteLocationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Location` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteLocation` mutation."""
+input DeleteLocationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""The output of our delete `Location` mutation."""
+type DeleteLocationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Location` that was deleted by this mutation."""
+  location: Location
+  deletedLocationNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Location`. May be used by Relay 1."""
+  locationEdge(
+    """The method to use when ordering `Location`."""
+    orderBy: [LocationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LocationsEdge
+}
+
+"""All input for the `deletePgmigrationByNodeId` mutation."""
+input DeletePgmigrationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Pgmigration` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deletePgmigration` mutation."""
+input DeletePgmigrationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""The output of our delete `Pgmigration` mutation."""
+type DeletePgmigrationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Pgmigration` that was deleted by this mutation."""
+  pgmigration: Pgmigration
+  deletedPgmigrationNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Pgmigration`. May be used by Relay 1."""
+  pgmigrationEdge(
+    """The method to use when ordering `Pgmigration`."""
+    orderBy: [PgmigrationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PgmigrationsEdge
+}
+
+"""All input for the `deleteStudentByNodeId` mutation."""
+input DeleteStudentByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Student` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteStudent` mutation."""
+input DeleteStudentInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  id: Int!
+}
+
+"""The output of our delete `Student` mutation."""
+type DeleteStudentPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Student` that was deleted by this mutation."""
+  student: Student
+  deletedStudentNodeId: ID
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Student`. May be used by Relay 1."""
+  studentEdge(
+    """The method to use when ordering `Student`."""
+    orderBy: [StudentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): StudentsEdge
+}
+
+type Instructor implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  createdAt: Datetime!
+  password: String
+  isAdmin: Boolean
+  name: String!
+  email: String!
+  phone: String!
+  uspaNumber: Int!
+  uspaLicense: String!
+
+  """Reads and enables pagination through a set of `InstructorLocation`."""
+  instructorLocations(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `InstructorLocation`."""
+    orderBy: [InstructorLocationsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: InstructorLocationCondition
+  ): InstructorLocationsConnection!
+
+  """Reads and enables pagination through a set of `Jump`."""
+  jumps(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Jump`."""
+    orderBy: [JumpsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: JumpCondition
+  ): JumpsConnection!
+}
+
+"""
+A condition to be used against `Instructor` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input InstructorCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+}
+
+"""An input for mutations affecting `Instructor`"""
+input InstructorInput {
+  id: Int
+  createdAt: Datetime
+  password: String
+  isAdmin: Boolean
+  name: String!
+  email: String!
+  phone: String!
+  uspaNumber: Int!
+  uspaLicense: String!
+}
+
+type InstructorLocation {
+  instructorId: Int!
+  locationId: Int!
+  isActive: Boolean
+
+  """
+  Reads a single `Instructor` that is related to this `InstructorLocation`.
+  """
+  instructor: Instructor
+
+  """
+  Reads a single `Location` that is related to this `InstructorLocation`.
+  """
+  location: Location
+}
+
+"""
+A condition to be used against `InstructorLocation` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input InstructorLocationCondition {
+  """Checks for equality with the object’s `instructorId` field."""
+  instructorId: Int
+
+  """Checks for equality with the object’s `locationId` field."""
+  locationId: Int
+
+  """Checks for equality with the object’s `isActive` field."""
+  isActive: Boolean
+}
+
+"""An input for mutations affecting `InstructorLocation`"""
+input InstructorLocationInput {
+  instructorId: Int!
+  locationId: Int!
+  isActive: Boolean
+}
+
+"""A connection to a list of `InstructorLocation` values."""
+type InstructorLocationsConnection {
+  """A list of `InstructorLocation` objects."""
+  nodes: [InstructorLocation!]!
+
+  """
+  A list of edges which contains the `InstructorLocation` and cursor to aid in pagination.
+  """
+  edges: [InstructorLocationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `InstructorLocation` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `InstructorLocation` edge in the connection."""
+type InstructorLocationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `InstructorLocation` at the end of the edge."""
+  node: InstructorLocation!
+}
+
+"""Methods to use when ordering `InstructorLocation`."""
+enum InstructorLocationsOrderBy {
+  NATURAL
+  INSTRUCTOR_ID_ASC
+  INSTRUCTOR_ID_DESC
+  LOCATION_ID_ASC
+  LOCATION_ID_DESC
+  IS_ACTIVE_ASC
+  IS_ACTIVE_DESC
+}
+
+"""
+Represents an update to a `Instructor`. Fields that are set will be updated.
+"""
+input InstructorPatch {
+  id: Int
+  createdAt: Datetime
+  password: String
+  isAdmin: Boolean
+  name: String
+  email: String
+  phone: String
+  uspaNumber: Int
+  uspaLicense: String
+}
+
+"""A connection to a list of `Instructor` values."""
+type InstructorsConnection {
+  """A list of `Instructor` objects."""
+  nodes: [Instructor!]!
+
+  """
+  A list of edges which contains the `Instructor` and cursor to aid in pagination.
+  """
+  edges: [InstructorsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Instructor` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Instructor` edge in the connection."""
+type InstructorsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Instructor` at the end of the edge."""
+  node: Instructor!
+}
+
+"""Methods to use when ordering `Instructor`."""
+enum InstructorsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type Jump implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  createdAt: Datetime!
+  studentId: Int!
+  instructorId: Int!
+  locationId: Int!
+  aircraftId: Int!
+  exitAltitude: Int!
+  deploymentAltitude: Int!
+  logEntry: String!
+
+  """Reads a single `Student` that is related to this `Jump`."""
+  student: Student
+
+  """Reads a single `Instructor` that is related to this `Jump`."""
+  instructor: Instructor
+
+  """Reads a single `Location` that is related to this `Jump`."""
+  location: Location
+
+  """Reads a single `Aircraft` that is related to this `Jump`."""
+  aircraft: Aircraft
+}
+
+"""
+A condition to be used against `Jump` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input JumpCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `studentId` field."""
+  studentId: Int
+
+  """Checks for equality with the object’s `instructorId` field."""
+  instructorId: Int
+
+  """Checks for equality with the object’s `locationId` field."""
+  locationId: Int
+
+  """Checks for equality with the object’s `aircraftId` field."""
+  aircraftId: Int
+}
+
+"""An input for mutations affecting `Jump`"""
+input JumpInput {
+  id: Int
+  createdAt: Datetime
+  studentId: Int!
+  instructorId: Int!
+  locationId: Int!
+  aircraftId: Int!
+  exitAltitude: Int!
+  deploymentAltitude: Int!
+  logEntry: String!
+}
+
+"""Represents an update to a `Jump`. Fields that are set will be updated."""
+input JumpPatch {
+  id: Int
+  createdAt: Datetime
+  studentId: Int
+  instructorId: Int
+  locationId: Int
+  aircraftId: Int
+  exitAltitude: Int
+  deploymentAltitude: Int
+  logEntry: String
+}
+
+"""A connection to a list of `Jump` values."""
+type JumpsConnection {
+  """A list of `Jump` objects."""
+  nodes: [Jump!]!
+
+  """
+  A list of edges which contains the `Jump` and cursor to aid in pagination.
+  """
+  edges: [JumpsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Jump` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Jump` edge in the connection."""
+type JumpsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Jump` at the end of the edge."""
+  node: Jump!
+}
+
+"""Methods to use when ordering `Jump`."""
+enum JumpsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  STUDENT_ID_ASC
+  STUDENT_ID_DESC
+  INSTRUCTOR_ID_ASC
+  INSTRUCTOR_ID_DESC
+  LOCATION_ID_ASC
+  LOCATION_ID_DESC
+  AIRCRAFT_ID_ASC
+  AIRCRAFT_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+type Location implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  code: String!
+  name: String!
+
+  """Reads and enables pagination through a set of `InstructorLocation`."""
+  instructorLocations(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `InstructorLocation`."""
+    orderBy: [InstructorLocationsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: InstructorLocationCondition
+  ): InstructorLocationsConnection!
+
+  """Reads and enables pagination through a set of `LocationAircraft`."""
+  locationAircrafts(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `LocationAircraft`."""
+    orderBy: [LocationAircraftsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LocationAircraftCondition
+  ): LocationAircraftsConnection!
+
+  """Reads and enables pagination through a set of `Jump`."""
+  jumps(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Jump`."""
+    orderBy: [JumpsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: JumpCondition
+  ): JumpsConnection!
+}
+
+type LocationAircraft {
+  locationId: Int!
+  aircraftId: Int!
+  isActive: Boolean
+
+  """Reads a single `Location` that is related to this `LocationAircraft`."""
+  location: Location
+
+  """Reads a single `Aircraft` that is related to this `LocationAircraft`."""
+  aircraft: Aircraft
+}
+
+"""
+A condition to be used against `LocationAircraft` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input LocationAircraftCondition {
+  """Checks for equality with the object’s `locationId` field."""
+  locationId: Int
+
+  """Checks for equality with the object’s `aircraftId` field."""
+  aircraftId: Int
+
+  """Checks for equality with the object’s `isActive` field."""
+  isActive: Boolean
+}
+
+"""An input for mutations affecting `LocationAircraft`"""
+input LocationAircraftInput {
+  locationId: Int!
+  aircraftId: Int!
+  isActive: Boolean
+}
+
+"""A connection to a list of `LocationAircraft` values."""
+type LocationAircraftsConnection {
+  """A list of `LocationAircraft` objects."""
+  nodes: [LocationAircraft!]!
+
+  """
+  A list of edges which contains the `LocationAircraft` and cursor to aid in pagination.
+  """
+  edges: [LocationAircraftsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `LocationAircraft` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `LocationAircraft` edge in the connection."""
+type LocationAircraftsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `LocationAircraft` at the end of the edge."""
+  node: LocationAircraft!
+}
+
+"""Methods to use when ordering `LocationAircraft`."""
+enum LocationAircraftsOrderBy {
+  NATURAL
+  LOCATION_ID_ASC
+  LOCATION_ID_DESC
+  AIRCRAFT_ID_ASC
+  AIRCRAFT_ID_DESC
+  IS_ACTIVE_ASC
+  IS_ACTIVE_DESC
+}
+
+"""
+A condition to be used against `Location` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input LocationCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+}
+
+"""An input for mutations affecting `Location`"""
+input LocationInput {
+  id: Int
+  code: String!
+  name: String!
+}
+
+"""
+Represents an update to a `Location`. Fields that are set will be updated.
+"""
+input LocationPatch {
+  id: Int
+  code: String
+  name: String
+}
+
+"""A connection to a list of `Location` values."""
+type LocationsConnection {
+  """A list of `Location` objects."""
+  nodes: [Location!]!
+
+  """
+  A list of edges which contains the `Location` and cursor to aid in pagination.
+  """
+  edges: [LocationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Location` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Location` edge in the connection."""
+type LocationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Location` at the end of the edge."""
+  node: Location!
+}
+
+"""Methods to use when ordering `Location`."""
+enum LocationsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+The root mutation type which contains root level fields which mutate data.
+"""
+type Mutation {
+  """Creates a single `Aircraft`."""
+  createAircraft(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateAircraftInput!
+  ): CreateAircraftPayload
+
+  """Creates a single `InstructorLocation`."""
+  createInstructorLocation(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateInstructorLocationInput!
+  ): CreateInstructorLocationPayload
+
+  """Creates a single `Instructor`."""
+  createInstructor(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateInstructorInput!
+  ): CreateInstructorPayload
+
+  """Creates a single `Jump`."""
+  createJump(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateJumpInput!
+  ): CreateJumpPayload
+
+  """Creates a single `LocationAircraft`."""
+  createLocationAircraft(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateLocationAircraftInput!
+  ): CreateLocationAircraftPayload
+
+  """Creates a single `Location`."""
+  createLocation(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateLocationInput!
+  ): CreateLocationPayload
+
+  """Creates a single `Pgmigration`."""
+  createPgmigration(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreatePgmigrationInput!
+  ): CreatePgmigrationPayload
+
+  """Creates a single `Student`."""
+  createStudent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateStudentInput!
+  ): CreateStudentPayload
+
+  """Updates a single `Aircraft` using its globally unique id and a patch."""
+  updateAircraftByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAircraftByNodeIdInput!
+  ): UpdateAircraftPayload
+
+  """Updates a single `Aircraft` using a unique key and a patch."""
+  updateAircraft(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateAircraftInput!
+  ): UpdateAircraftPayload
+
+  """
+  Updates a single `Instructor` using its globally unique id and a patch.
+  """
+  updateInstructorByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateInstructorByNodeIdInput!
+  ): UpdateInstructorPayload
+
+  """Updates a single `Instructor` using a unique key and a patch."""
+  updateInstructor(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateInstructorInput!
+  ): UpdateInstructorPayload
+
+  """Updates a single `Jump` using its globally unique id and a patch."""
+  updateJumpByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateJumpByNodeIdInput!
+  ): UpdateJumpPayload
+
+  """Updates a single `Jump` using a unique key and a patch."""
+  updateJump(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateJumpInput!
+  ): UpdateJumpPayload
+
+  """Updates a single `Location` using its globally unique id and a patch."""
+  updateLocationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateLocationByNodeIdInput!
+  ): UpdateLocationPayload
+
+  """Updates a single `Location` using a unique key and a patch."""
+  updateLocation(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateLocationInput!
+  ): UpdateLocationPayload
+
+  """
+  Updates a single `Pgmigration` using its globally unique id and a patch.
+  """
+  updatePgmigrationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdatePgmigrationByNodeIdInput!
+  ): UpdatePgmigrationPayload
+
+  """Updates a single `Pgmigration` using a unique key and a patch."""
+  updatePgmigration(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdatePgmigrationInput!
+  ): UpdatePgmigrationPayload
+
+  """Updates a single `Student` using its globally unique id and a patch."""
+  updateStudentByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateStudentByNodeIdInput!
+  ): UpdateStudentPayload
+
+  """Updates a single `Student` using a unique key and a patch."""
+  updateStudent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateStudentInput!
+  ): UpdateStudentPayload
+
+  """Deletes a single `Aircraft` using its globally unique id."""
+  deleteAircraftByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAircraftByNodeIdInput!
+  ): DeleteAircraftPayload
+
+  """Deletes a single `Aircraft` using a unique key."""
+  deleteAircraft(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteAircraftInput!
+  ): DeleteAircraftPayload
+
+  """Deletes a single `Instructor` using its globally unique id."""
+  deleteInstructorByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteInstructorByNodeIdInput!
+  ): DeleteInstructorPayload
+
+  """Deletes a single `Instructor` using a unique key."""
+  deleteInstructor(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteInstructorInput!
+  ): DeleteInstructorPayload
+
+  """Deletes a single `Jump` using its globally unique id."""
+  deleteJumpByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteJumpByNodeIdInput!
+  ): DeleteJumpPayload
+
+  """Deletes a single `Jump` using a unique key."""
+  deleteJump(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteJumpInput!
+  ): DeleteJumpPayload
+
+  """Deletes a single `Location` using its globally unique id."""
+  deleteLocationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteLocationByNodeIdInput!
+  ): DeleteLocationPayload
+
+  """Deletes a single `Location` using a unique key."""
+  deleteLocation(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteLocationInput!
+  ): DeleteLocationPayload
+
+  """Deletes a single `Pgmigration` using its globally unique id."""
+  deletePgmigrationByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeletePgmigrationByNodeIdInput!
+  ): DeletePgmigrationPayload
+
+  """Deletes a single `Pgmigration` using a unique key."""
+  deletePgmigration(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeletePgmigrationInput!
+  ): DeletePgmigrationPayload
+
+  """Deletes a single `Student` using its globally unique id."""
+  deleteStudentByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteStudentByNodeIdInput!
+  ): DeleteStudentPayload
+
+  """Deletes a single `Student` using a unique key."""
+  deleteStudent(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteStudentInput!
+  ): DeleteStudentPayload
+}
+
+"""An object with a globally unique `ID`."""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
+}
+
+type Pgmigration implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  name: String!
+  runOn: Datetime!
+}
+
+"""
+A condition to be used against `Pgmigration` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input PgmigrationCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+}
+
+"""An input for mutations affecting `Pgmigration`"""
+input PgmigrationInput {
+  id: Int
+  name: String!
+  runOn: Datetime!
+}
+
+"""
+Represents an update to a `Pgmigration`. Fields that are set will be updated.
+"""
+input PgmigrationPatch {
+  id: Int
+  name: String
+  runOn: Datetime
+}
+
+"""A connection to a list of `Pgmigration` values."""
+type PgmigrationsConnection {
+  """A list of `Pgmigration` objects."""
+  nodes: [Pgmigration!]!
+
+  """
+  A list of edges which contains the `Pgmigration` and cursor to aid in pagination.
+  """
+  edges: [PgmigrationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Pgmigration` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Pgmigration` edge in the connection."""
+type PgmigrationsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Pgmigration` at the end of the edge."""
+  node: Pgmigration!
+}
+
+"""Methods to use when ordering `Pgmigration`."""
+enum PgmigrationsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""The root query type which gives access points into the data universe."""
+type Query implements Node {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  """
+  nodeId: ID!
+
+  """Fetches an object given its globally unique `ID`."""
+  node(
+    """The globally unique `ID`."""
+    nodeId: ID!
+  ): Node
+
+  """Reads and enables pagination through a set of `Aircraft`."""
+  aircrafts(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Aircraft`."""
+    orderBy: [AircraftsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: AircraftCondition
+  ): AircraftsConnection
+
+  """Reads and enables pagination through a set of `InstructorLocation`."""
+  instructorLocations(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `InstructorLocation`."""
+    orderBy: [InstructorLocationsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: InstructorLocationCondition
+  ): InstructorLocationsConnection
+
+  """Reads and enables pagination through a set of `Instructor`."""
+  instructors(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Instructor`."""
+    orderBy: [InstructorsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: InstructorCondition
+  ): InstructorsConnection
+
+  """Reads and enables pagination through a set of `Jump`."""
+  jumps(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Jump`."""
+    orderBy: [JumpsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: JumpCondition
+  ): JumpsConnection
+
+  """Reads and enables pagination through a set of `LocationAircraft`."""
+  locationAircrafts(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `LocationAircraft`."""
+    orderBy: [LocationAircraftsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LocationAircraftCondition
+  ): LocationAircraftsConnection
+
+  """Reads and enables pagination through a set of `Location`."""
+  locations(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Location`."""
+    orderBy: [LocationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: LocationCondition
+  ): LocationsConnection
+
+  """Reads and enables pagination through a set of `Pgmigration`."""
+  pgmigrations(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Pgmigration`."""
+    orderBy: [PgmigrationsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: PgmigrationCondition
+  ): PgmigrationsConnection
+
+  """Reads and enables pagination through a set of `Student`."""
+  students(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Student`."""
+    orderBy: [StudentsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: StudentCondition
+  ): StudentsConnection
+  aircraft(id: Int!): Aircraft
+  instructor(id: Int!): Instructor
+  jump(id: Int!): Jump
+  location(id: Int!): Location
+  pgmigration(id: Int!): Pgmigration
+  student(id: Int!): Student
+
+  """Reads a single `Aircraft` using its globally unique `ID`."""
+  aircraftByNodeId(
+    """The globally unique `ID` to be used in selecting a single `Aircraft`."""
+    nodeId: ID!
+  ): Aircraft
+
+  """Reads a single `Instructor` using its globally unique `ID`."""
+  instructorByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `Instructor`.
+    """
+    nodeId: ID!
+  ): Instructor
+
+  """Reads a single `Jump` using its globally unique `ID`."""
+  jumpByNodeId(
+    """The globally unique `ID` to be used in selecting a single `Jump`."""
+    nodeId: ID!
+  ): Jump
+
+  """Reads a single `Location` using its globally unique `ID`."""
+  locationByNodeId(
+    """The globally unique `ID` to be used in selecting a single `Location`."""
+    nodeId: ID!
+  ): Location
+
+  """Reads a single `Pgmigration` using its globally unique `ID`."""
+  pgmigrationByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `Pgmigration`.
+    """
+    nodeId: ID!
+  ): Pgmigration
+
+  """Reads a single `Student` using its globally unique `ID`."""
+  studentByNodeId(
+    """The globally unique `ID` to be used in selecting a single `Student`."""
+    nodeId: ID!
+  ): Student
+}
+
+type Student implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  createdAt: Datetime!
+  name: String!
+  email: String!
+  phone: String!
+  hometown: String
+  uspaNumber: String
+  uspaLicense: String
+  hasCompletedFjc: Boolean
+
+  """Reads and enables pagination through a set of `Jump`."""
+  jumps(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Jump`."""
+    orderBy: [JumpsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: JumpCondition
+  ): JumpsConnection!
+}
+
+"""
+A condition to be used against `Student` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input StudentCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+}
+
+"""An input for mutations affecting `Student`"""
+input StudentInput {
+  id: Int
+  createdAt: Datetime
+  name: String!
+  email: String!
+  phone: String!
+  hometown: String
+  uspaNumber: String
+  uspaLicense: String
+  hasCompletedFjc: Boolean
+}
+
+"""
+Represents an update to a `Student`. Fields that are set will be updated.
+"""
+input StudentPatch {
+  id: Int
+  createdAt: Datetime
+  name: String
+  email: String
+  phone: String
+  hometown: String
+  uspaNumber: String
+  uspaLicense: String
+  hasCompletedFjc: Boolean
+}
+
+"""A connection to a list of `Student` values."""
+type StudentsConnection {
+  """A list of `Student` objects."""
+  nodes: [Student!]!
+
+  """
+  A list of edges which contains the `Student` and cursor to aid in pagination.
+  """
+  edges: [StudentsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Student` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Student` edge in the connection."""
+type StudentsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Student` at the end of the edge."""
+  node: Student!
+}
+
+"""Methods to use when ordering `Student`."""
+enum StudentsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""All input for the `updateAircraftByNodeId` mutation."""
+input UpdateAircraftByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Aircraft` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Aircraft` being updated.
+  """
+  patch: AircraftPatch!
+}
+
+"""All input for the `updateAircraft` mutation."""
+input UpdateAircraftInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Aircraft` being updated.
+  """
+  patch: AircraftPatch!
+  id: Int!
+}
+
+"""The output of our update `Aircraft` mutation."""
+type UpdateAircraftPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Aircraft` that was updated by this mutation."""
+  aircraft: Aircraft
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Aircraft`. May be used by Relay 1."""
+  aircraftEdge(
+    """The method to use when ordering `Aircraft`."""
+    orderBy: [AircraftsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): AircraftsEdge
+}
+
+"""All input for the `updateInstructorByNodeId` mutation."""
+input UpdateInstructorByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Instructor` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Instructor` being updated.
+  """
+  patch: InstructorPatch!
+}
+
+"""All input for the `updateInstructor` mutation."""
+input UpdateInstructorInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Instructor` being updated.
+  """
+  patch: InstructorPatch!
+  id: Int!
+}
+
+"""The output of our update `Instructor` mutation."""
+type UpdateInstructorPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Instructor` that was updated by this mutation."""
+  instructor: Instructor
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Instructor`. May be used by Relay 1."""
+  instructorEdge(
+    """The method to use when ordering `Instructor`."""
+    orderBy: [InstructorsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): InstructorsEdge
+}
+
+"""All input for the `updateJumpByNodeId` mutation."""
+input UpdateJumpByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Jump` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Jump` being updated.
+  """
+  patch: JumpPatch!
+}
+
+"""All input for the `updateJump` mutation."""
+input UpdateJumpInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Jump` being updated.
+  """
+  patch: JumpPatch!
+  id: Int!
+}
+
+"""The output of our update `Jump` mutation."""
+type UpdateJumpPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Jump` that was updated by this mutation."""
+  jump: Jump
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Student` that is related to this `Jump`."""
+  student: Student
+
+  """Reads a single `Instructor` that is related to this `Jump`."""
+  instructor: Instructor
+
+  """Reads a single `Location` that is related to this `Jump`."""
+  location: Location
+
+  """Reads a single `Aircraft` that is related to this `Jump`."""
+  aircraft: Aircraft
+
+  """An edge for our `Jump`. May be used by Relay 1."""
+  jumpEdge(
+    """The method to use when ordering `Jump`."""
+    orderBy: [JumpsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): JumpsEdge
+}
+
+"""All input for the `updateLocationByNodeId` mutation."""
+input UpdateLocationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Location` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Location` being updated.
+  """
+  patch: LocationPatch!
+}
+
+"""All input for the `updateLocation` mutation."""
+input UpdateLocationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Location` being updated.
+  """
+  patch: LocationPatch!
+  id: Int!
+}
+
+"""The output of our update `Location` mutation."""
+type UpdateLocationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Location` that was updated by this mutation."""
+  location: Location
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Location`. May be used by Relay 1."""
+  locationEdge(
+    """The method to use when ordering `Location`."""
+    orderBy: [LocationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): LocationsEdge
+}
+
+"""All input for the `updatePgmigrationByNodeId` mutation."""
+input UpdatePgmigrationByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Pgmigration` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Pgmigration` being updated.
+  """
+  patch: PgmigrationPatch!
+}
+
+"""All input for the `updatePgmigration` mutation."""
+input UpdatePgmigrationInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Pgmigration` being updated.
+  """
+  patch: PgmigrationPatch!
+  id: Int!
+}
+
+"""The output of our update `Pgmigration` mutation."""
+type UpdatePgmigrationPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Pgmigration` that was updated by this mutation."""
+  pgmigration: Pgmigration
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Pgmigration`. May be used by Relay 1."""
+  pgmigrationEdge(
+    """The method to use when ordering `Pgmigration`."""
+    orderBy: [PgmigrationsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): PgmigrationsEdge
+}
+
+"""All input for the `updateStudentByNodeId` mutation."""
+input UpdateStudentByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Student` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Student` being updated.
+  """
+  patch: StudentPatch!
+}
+
+"""All input for the `updateStudent` mutation."""
+input UpdateStudentInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Student` being updated.
+  """
+  patch: StudentPatch!
+  id: Int!
+}
+
+"""The output of our update `Student` mutation."""
+type UpdateStudentPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Student` that was updated by this mutation."""
+  student: Student
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """An edge for our `Student`. May be used by Relay 1."""
+  studentEdge(
+    """The method to use when ordering `Student`."""
+    orderBy: [StudentsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): StudentsEdge
+}

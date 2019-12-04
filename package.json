@@ -2,21 +2,41 @@
   "name": "skydive-student-log",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^5.0.0-beta.1",
+    "@types/express": "^4.17.2",
+    "@types/express-fileupload": "^1.1.0",
     "@types/jest": "24.0.23",
     "@types/node": "12.12.11",
     "@types/react": "16.9.12",
     "@types/react-dom": "16.9.4",
+    "@types/react-router-dom": "^5.1.2",
+    "bcrypt": "^3.0.7",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "graphql-hooks": "^4.2.0",
+    "node-pg-migrate": "^3.23.3",
+    "pg": "^7.14.0",
+    "postgraphile": "^4.5.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "typescript": "3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "nodemon --watch server server/index.js",
+    "db:up": "docker-compose up",
+    "db:down": "docker-compose down",
+    "dev": "concurrently \"npm run start\" \"npm run server\"",
+    "migrate": "node-pg-migrate"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -32,5 +52,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.0",
+    "nodemon": "^2.0.1",
+    "ts-node": "^8.5.4"
   }
 }
