@@ -4,7 +4,7 @@ exports.shorthands = undefined;
 
 exports.up = pgm => {
   pgm.createTable("instructors", {
-    id: "id",
+    id: { type: "serial", notNull: true, primaryKey: true},
     createdAt: {
       type: "timestamp",
       notNull: true,
@@ -20,7 +20,7 @@ exports.up = pgm => {
   });
 
   pgm.createTable("locations", {
-    id: "id",
+    id: { type: "serial", notNull: true, primaryKey: true},
     code: { type: "varchar", notNull: true },
     name: { type: "varchar", notNull: true }
   });
@@ -40,7 +40,7 @@ exports.up = pgm => {
   pgm.createIndex("instructor_locations", ["instructorId", "locationId"]);
 
   pgm.createTable("aircraft", {
-    id: "id",
+    id: { type: "serial", notNull: true, primaryKey: true},
     name: { type: "varchar", notNull: true }
   });
 
@@ -55,7 +55,7 @@ exports.up = pgm => {
   pgm.createIndex("location_aircraft", ["locationId", "aircraftId"]);
 
   pgm.createTable("students", {
-    id: "id",
+    id: { type: "serial", notNull: true, primaryKey: true},
     createdAt: {
       type: "timestamp",
       notNull: true,
@@ -71,7 +71,7 @@ exports.up = pgm => {
   });
 
   pgm.createTable("jumps", {
-    id: "id",
+    id: { type: "serial", notNull: true, primaryKey: true},
     createdAt: {
       type: "timestamp",
       notNull: true,

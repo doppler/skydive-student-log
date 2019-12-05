@@ -16,6 +16,8 @@ const postgraphileOptions = {
   extendedErrors: ["hint", "detail", "errcode"],
   appendPlugins: [require("@graphile-contrib/pg-simplify-inflector")],
   exportGqlSchemaPath: "schema.graphql",
+  exportSchemaJson: "schema.json",
+  sortExport: true,
   graphiql: true,
   enhanceGraphiql: true,
   allowExplain(req) {
