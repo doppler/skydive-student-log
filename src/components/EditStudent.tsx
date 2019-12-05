@@ -115,14 +115,14 @@ const useGraphQLStore = (action: Function):[UseGraphQLFetchValue, Function] => {
 
 const saveToGraphQLStore = async (query: string) => {
   let response = await axios.post("/graphql", { query })
-  // console.log(response)
   if (response.status !== 200) throw new Error(`Error: ${response.status} : ${response.statusText}`)
   let { data } = response.data
-  // console.log({data})
   return data
 }
 
 const getIdFromResult = (data: any): number => {
+  // data looks like this
+  // {"data":{"__typename":"Mutation","createStudent":{"student":{"id":23}}}}
   const resultObjKey: string = Object.keys(data).filter(k => k.match((/(create|update)/)))[0]
   const accessor = resultObjKey.replace(/(create|update)/, '').toLowerCase()
   const id: number = data[resultObjKey][accessor]['id']
@@ -151,6 +151,7 @@ const EditStudentForm: React.FC<StudentProps> = (props: StudentProps) => {
     res.loading ? <div>Saving...</div> : res.error ? <div>Error!</div> : <div></div>
   )
 
+  // if this was a create, need the id from the mutation result
   if (res.complete && !student.id) setStudent(prevState => ({...prevState, id: getIdFromResult(res.data)}))
 
   return (
