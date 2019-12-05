@@ -36,6 +36,7 @@
     "server": "nodemon --watch server server/index.js",
     "db:up": "docker-compose up",
     "db:down": "docker-compose down",
+    "db:psql": "docker exec -it my_postgres psql -h localhost -U user -p 5432 -d data",
     "dev": "concurrently \"npm run start\" \"npm run server\"",
     "migrate": "node-pg-migrate"
   },
