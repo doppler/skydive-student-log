@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { useRouteMatch } from "react-router-dom"
-// import { useQuery } from "graphql-hooks"
 import axios from "axios";
 
 interface IStudent {
@@ -35,20 +34,22 @@ const newStudentData:IStudent = {
     "uspaNumber": null
 }
 
-const createStudentQuery = (student: IStudent) => `mutation {
-  __typename
-  createStudent(
-    input: {
-      student: {
-        name: ${JSON.stringify(student.name)}, 
-        email:${JSON.stringify(student.email)}, 
-        phone: ${JSON.stringify(student.phone)}, 
-        hometown: ${JSON.stringify(student.hometown)}
+const createStudentQuery = (student: any) => {
+  const queryValues = Object.keys(student).map((key: string) => {
+    return `${key}: ${JSON.stringify(student[key])}`
+  }).join(", ")
+  return `mutation {
+    __typename
+    createStudent(
+      input: {
+        student: {
+          ${queryValues}
+        }
+      }) {
+        student { id }
       }
-    }) {
-      student { id }
-    }
-  }`
+    }`  
+}
 
 const updateStudentQuery = (student: any): string => {
   const { id } = student
@@ -73,16 +74,17 @@ type UseGraphQLFetchValue = {
   loading: boolean,
   error: null | {}
   data: null | {student:IStudent}
+  complete: boolean
 }
 
 const useGraphQLFetch = (query: string) => {
-  const [res, setRes] = useState<UseGraphQLFetchValue>({loading: true, error: null, data: null});
+  const [res, setRes] = useState<UseGraphQLFetchValue>({loading: true, error: null, data: null, complete: false});
   React.useEffect(() => {
-    setRes({loading: true, error: null, data: null});
+    setRes({loading: true, error: null, data: null, complete: false});
     axios.post("/graphql", { query }).then(res => {
-      setRes({...res.data, error: null, isLoading: false})
+      setRes({...res.data, error: null, isLoading: false, complete: true})
     }).catch(error => {
-      setRes({data: error , loading: false, error})
+      setRes({data: error , loading: false, error, complete: false})
     })
   }, [query])
   return res
@@ -92,6 +94,7 @@ const useGraphQLStore = (action: Function):[UseGraphQLFetchValue, Function] => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [data, setData] = useState(null)
+  const [complete, setComplete] = useState(false)
 
   const performAction = async (query: string) => {
     try {
@@ -100,22 +103,30 @@ const useGraphQLStore = (action: Function):[UseGraphQLFetchValue, Function] => {
       setError(null)
       const data = await action(query)
       setData(data)
+      setComplete(true)
     } catch(e) {
       setError(e)
     } finally {
       setLoading(false)
     }
   }
-  return [{ loading, error, data }, performAction]
+  return [{ loading, error, data, complete }, performAction]
 }
 
 const saveToGraphQLStore = async (query: string) => {
   let response = await axios.post("/graphql", { query })
-  console.log(response)
+  // console.log(response)
   if (response.status !== 200) throw new Error(`Error: ${response.status} : ${response.statusText}`)
   let { data } = response.data
-  console.log({data})
+  // console.log({data})
   return data
+}
+
+const getIdFromResult = (data: any): number => {
+  const resultObjKey: string = Object.keys(data).filter(k => k.match((/(create|update)/)))[0]
+  const accessor = resultObjKey.replace(/(create|update)/, '').toLowerCase()
+  const id: number = data[resultObjKey][accessor]['id']
+  return id
 }
 
 type StudentProps = {
@@ -140,8 +151,11 @@ const EditStudentForm: React.FC<StudentProps> = (props: StudentProps) => {
     res.loading ? <div>Saving...</div> : res.error ? <div>Error!</div> : <div></div>
   )
 
+  if (res.complete && !student.id) setStudent(prevState => ({...prevState, id: getIdFromResult(res.data)}))
+
   return (
     <form onSubmit={saveStudent}>
+      <div>id: {student.id}</div>
       <div>
         <input autoComplete="off" onChange={changeInputValue} name="name" value={student.name} placeholder="Full Name" required />
       </div>
