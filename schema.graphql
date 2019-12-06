@@ -810,10 +810,10 @@ type Instructor implements Node {
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
   nodeId: ID!
-  password: String
-  phone: String!
-  uspaLicense: String!
-  uspaNumber: Int!
+  password: String!
+  phone: String
+  uspaLicense: String
+  uspaNumber: Int
 }
 
 """
@@ -832,10 +832,10 @@ input InstructorInput {
   id: Int
   isAdmin: Boolean
   name: String!
-  password: String
-  phone: String!
-  uspaLicense: String!
-  uspaNumber: Int!
+  password: String!
+  phone: String
+  uspaLicense: String
+  uspaNumber: Int
 }
 
 type InstructorLocation {
@@ -1084,6 +1084,12 @@ enum JumpsOrderBy {
   PRIMARY_KEY_DESC
   STUDENT_ID_ASC
   STUDENT_ID_DESC
+}
+
+type JwtToken {
+  instructorId: Int
+  name: String
+  role: String
 }
 
 type Location implements Node {
@@ -1479,6 +1485,18 @@ type Mutation {
     """
     input: DeleteStudentByNodeIdInput!
   ): DeleteStudentPayload
+  signinInstructor(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SigninInstructorInput!
+  ): SigninInstructorPayload
+  signupInstructor(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SignupInstructorInput!
+  ): SignupInstructorPayload
 
   """Updates a single `Aircraft` using a unique key and a patch."""
   updateAircraft(
@@ -1972,6 +1990,59 @@ type Query implements Node {
     """The method to use when ordering `Student`."""
     orderBy: [StudentsOrderBy!] = [PRIMARY_KEY_ASC]
   ): StudentsConnection
+}
+
+"""All input for the `signinInstructor` mutation."""
+input SigninInstructorInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  email: String
+  password: String
+}
+
+"""The output of our `signinInstructor` mutation."""
+type SigninInstructorPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  jwtToken: JwtToken
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `signupInstructor` mutation."""
+input SignupInstructorInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  email: String
+  name: String
+  password: String
+}
+
+"""The output of our `signupInstructor` mutation."""
+type SignupInstructorPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  jwtToken: JwtToken
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 type Student implements Node {

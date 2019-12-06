@@ -3,6 +3,63 @@
 exports.shorthands = undefined;
 
 exports.up = pgm => {
+  pgm.createExtension("pgcrypto");
+
+  pgm.createRole("anonymous");
+  pgm.sql("GRANT anonymous TO current_user");
+
+  pgm.creatRole("instructor");
+  pgm.sql("GRANT instructor TO current_user");
+
+  pgm.createType("jwt_token", {
+    role: "text",
+    instructorId: "integer",
+    name: "text"
+  });
+
+  pgm.createFunction("signup_instructor", [
+    { mode: "IN", name: "name", type: "text", default: null },
+    { mode: "IN", name: "email", type: "text", default: null },
+    { mode: "IN", name: "password", type: "text", default: null }    
+  ], {
+    returns: "jwt_token",
+    language: "plpgsql",
+    replace: true
+  },`
+    DECLARE
+      token_information jwt_token;
+    BEGIN
+      INSERT INTO instructors (name, email, password) VALUES ($1, $2, crypt($3, gen_salt('bf', 8)));
+      SELECT 'instructor', instructors.id as id, instructors.name as name
+        INTO token_information
+        FROM instructors
+        WHERE instructors.email = $2;
+      RETURN token_information::jwt_token;
+    END;
+  `);
+  pgm.sql("GRANT EXECUTE ON FUNCTION SIGNUP_INSTRUCTOR(name TEXT, email TEXT, password TEXT) TO anonymous")
+
+  pgm.createFunction("signin_instructor", [
+    { mode: "IN", name: "email", type: "text", default: null },
+    { mode: "IN", name: "password", type: "text", default: null }
+  ], {
+    returns: "jwt_token",
+    language: "plpgsql",
+    replace: true
+  },`
+    DECLARE
+      token_information jwt_token;
+    BEGIN
+      SELECT 'instructor', instructors.id as id, instructors.name as name
+      INTO token_information
+      FROM instructors
+      WHERE instructors.email = $1
+        AND instructors.password = crypt($2, instructors.password);
+    RETURN token_information::jwt_token;
+  END;
+  `);
+  pgm.sql("GRANT EXECUTE ON FUNCTION SIGNIN_INSTRUCTOR(email TEXT, password TEXT) TO anonymous");
+
   pgm.createTable("instructors", {
     id: { type: "serial", notNull: true, primaryKey: true},
     createdAt: {
@@ -10,13 +67,13 @@ exports.up = pgm => {
       notNull: true,
       default: pgm.func("current_timestamp")
     },
-    password: { type: "varchar" },
+    password: { type: "text", notNull: true },
     isAdmin: { type: "boolean", default: false },
     name: { type: "varchar", notNull: true },
     email: { type: "varchar", notNull: true },
-    phone: { type: "varchar", notNull: true },
-    uspaNumber: { type: "integer", notNull: true },
-    uspaLicense: { type: "varchar", notNull: true }
+    phone: { type: "varchar" },
+    uspaNumber: { type: "integer" },
+    uspaLicense: { type: "varchar" }
   });
 
   pgm.createTable("locations", {
@@ -49,9 +106,9 @@ exports.up = pgm => {
     aircraftId: { type: "integer", references: "aircraft(id)", notNull: true },
     isActive: { type: "boolean", default: true }
   });
+  pgm.createIndex("location_aircraft", "isActive");
   pgm.createIndex("location_aircraft", "locationId");
   pgm.createIndex("location_aircraft", "aircraftId");
-  pgm.createIndex("location_aircraft", "isActive");
   pgm.createIndex("location_aircraft", ["locationId", "aircraftId"]);
 
   pgm.createTable("students", {
@@ -104,4 +161,13 @@ exports.down = pgm => {
   pgm.dropTable("locations", { ifExists: true });
   pgm.dropTable("aircraft", { ifExists: true });
   pgm.dropTable("instructors", { ifExists: true });
+  pgm.dropExtension("pgcrypto");
+  pgm.dropFunction("signup_instructor", [
+    { mode: "IN", name: "name", type: "text", default: null },
+    { mode: "IN", name: "email", type: "text", default: null },
+    { mode: "IN", name: "password", type: "text", default: null }    
+  ], { ifExists: true});
+  pgm.dropType("jwt_token");
+  pgm.dropRole("instructor");
+  pgm.dropRole("anonymous");
 };
