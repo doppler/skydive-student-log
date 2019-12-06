@@ -8,7 +8,8 @@ const PORT = 4000;
 const postgraphileOptions = {
   subscriptions: true,
   watchPg: true,
-  jwtTokenIdentifier: "public.jwt_token",
+  // jwtTokenIdentifier: "public.jwt_token",
+  jwtPgTypeIdentifier: "public.jwt_token",
   jwtSecret: "foobar",
   defaultRole: "anonymous",
   dynamicJson: true,
@@ -31,8 +32,7 @@ const postgraphileOptions = {
   legacyRelations: "omit",
   pgSettings(req) {
     /* TODO */
-  },
-  jwtTokenIdentifier: "public.jwt_token"
+  }
 };
 
 app.use(postgraphile(process.env.DATABASE_URL, "public", postgraphileOptions));

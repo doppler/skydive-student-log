@@ -8,7 +8,7 @@ exports.up = pgm => {
   pgm.createRole("anonymous");
   pgm.sql("GRANT anonymous TO current_user");
 
-  pgm.creatRole("instructor");
+  pgm.createRole("instructor");
   pgm.sql("GRANT instructor TO current_user");
 
   pgm.createType("jwt_token", {
@@ -151,6 +151,10 @@ exports.up = pgm => {
   pgm.createIndex("jumps", "locationId");
   pgm.createIndex("jumps", "aircraftId");
   pgm.createIndex("jumps", "createdAt");
+
+  pgm.sql("GRANT SELECT ON ALL TABLES IN SCHEMA public TO instructor");
+  pgm.sql("GRANT INSERT, UPDATE ON students, students_id_seq, jumps, jumps_id_seq TO instructor");
+  pgm.sql("GRANT UPDATE ON students_id_seq, jumps_id_seq TO instructor");
 };
 
 exports.down = pgm => {
@@ -162,12 +166,16 @@ exports.down = pgm => {
   pgm.dropTable("aircraft", { ifExists: true });
   pgm.dropTable("instructors", { ifExists: true });
   pgm.dropExtension("pgcrypto");
+  pgm.dropFunction("signin_instructor", [
+    { mode: "IN", name: "email", type: "text", default: null },
+    { mode: "IN", name: "password", type: "text", default: null }
+  ], { ifExists: true })
   pgm.dropFunction("signup_instructor", [
     { mode: "IN", name: "name", type: "text", default: null },
     { mode: "IN", name: "email", type: "text", default: null },
     { mode: "IN", name: "password", type: "text", default: null }    
   ], { ifExists: true});
+  pgm.dropRole("instructor", { ifExists: true });
+  pgm.dropRole("anonymous", { ifExists: true });
   pgm.dropType("jwt_token");
-  pgm.dropRole("instructor");
-  pgm.dropRole("anonymous");
 };

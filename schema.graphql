@@ -1086,11 +1086,11 @@ enum JumpsOrderBy {
   STUDENT_ID_DESC
 }
 
-type JwtToken {
-  instructorId: Int
-  name: String
-  role: String
-}
+"""
+A JSON Web Token defined by [RFC 7519](https://tools.ietf.org/html/rfc7519)
+which securely represents claims between two parties.
+"""
+scalar JwtToken
 
 type Location implements Node {
   code: String!
