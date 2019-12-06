@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "graphql-hooks";
+import { useGraphQLQuery } from "../graphql-utils"
 import { useHistory, useRouteMatch } from "react-router-dom";
 
 type Student = {
@@ -27,7 +27,7 @@ const ALL_STUDENTS = `query MyQuery {
 }`;
 
 const ListStudents: React.FC = () => {
-  const { loading, error, data } = useQuery(ALL_STUDENTS);
+  const { loading, error, data } = useGraphQLQuery (ALL_STUDENTS);
   const history = useHistory();
   const match = useRouteMatch();
 

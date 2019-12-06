@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouteMatch, useHistory } from "react-router-dom";
-import { useQuery } from "graphql-hooks";
+import { useGraphQLQuery } from "../graphql-utils"
 
 const fetchStudentAndJumpsQuery = (id: number) => `
   query fetchStudentQuery {
@@ -37,7 +37,7 @@ const ShowStudent: React.FC = () => {
   const match = useRouteMatch();
   const { params } = useRouteMatch();
   const history = useHistory();
-  const { loading, error, data } = useQuery(
+  const { loading, error, data } = useGraphQLQuery(
     fetchStudentAndJumpsQuery(params.studentId)
   );
   if (loading) return <div>Loading...</div>;

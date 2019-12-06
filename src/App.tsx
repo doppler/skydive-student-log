@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { GraphQLClient, ClientContext } from "graphql-hooks";
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,36 +10,30 @@ import StudentRouter from "./components/StudentRouter";
 
 import "./App.css";
 
-const client = new GraphQLClient({
-  url: "/graphql"
-});
-
 const App: React.FC = () => {
   return (
-    <ClientContext.Provider value={client}>
-      <Router>
-        <Switch>
-          <Route path="/students">
-            <StudentRouter />
-          </Route>
-          <PrivateRoute path="/settings">
-            <Settings />
-          </PrivateRoute>
-          <PrivateRoute path="/instructors">
-            <Instructors />
-          </PrivateRoute>
-          <PrivateRoute path="/aircraft">
-            <Aircraft />
-          </PrivateRoute>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
-    </ClientContext.Provider>
+    <Router>
+      <Switch>
+        <Route path="/students">
+          <StudentRouter />
+        </Route>
+        <PrivateRoute path="/settings">
+          <Settings />
+        </PrivateRoute>
+        <PrivateRoute path="/instructors">
+          <Instructors />
+        </PrivateRoute>
+        <PrivateRoute path="/aircraft">
+          <Aircraft />
+        </PrivateRoute>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 
