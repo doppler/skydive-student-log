@@ -970,12 +970,14 @@ type Jump implements Node {
   aircraftId: Int!
   createdAt: Datetime!
   deploymentAltitude: Int!
+  diveFlowNumber: Int!
   exitAltitude: Int!
   id: Int!
 
   """Reads a single `Instructor` that is related to this `Jump`."""
   instructor: Instructor
   instructorId: Int!
+  jumpNumber: Int!
 
   """Reads a single `Location` that is related to this `Jump`."""
   location: Location
@@ -1020,9 +1022,11 @@ input JumpInput {
   aircraftId: Int!
   createdAt: Datetime
   deploymentAltitude: Int!
+  diveFlowNumber: Int!
   exitAltitude: Int!
   id: Int
   instructorId: Int!
+  jumpNumber: Int!
   locationId: Int!
   logEntry: String!
   studentId: Int!
@@ -1033,9 +1037,11 @@ input JumpPatch {
   aircraftId: Int
   createdAt: Datetime
   deploymentAltitude: Int
+  diveFlowNumber: Int
   exitAltitude: Int
   id: Int
   instructorId: Int
+  jumpNumber: Int
   locationId: Int
   logEntry: String
   studentId: Int

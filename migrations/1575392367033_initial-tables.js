@@ -17,15 +17,19 @@ exports.up = pgm => {
     name: "text"
   });
 
-  pgm.createFunction("signup_instructor", [
-    { mode: "IN", name: "name", type: "text", default: null },
-    { mode: "IN", name: "email", type: "text", default: null },
-    { mode: "IN", name: "password", type: "text", default: null }    
-  ], {
-    returns: "jwt_token",
-    language: "plpgsql",
-    replace: true
-  },`
+  pgm.createFunction(
+    "signup_instructor",
+    [
+      { mode: "IN", name: "name", type: "text", default: null },
+      { mode: "IN", name: "email", type: "text", default: null },
+      { mode: "IN", name: "password", type: "text", default: null }
+    ],
+    {
+      returns: "jwt_token",
+      language: "plpgsql",
+      replace: true
+    },
+    `
     DECLARE
       token_information jwt_token;
     BEGIN
@@ -36,17 +40,24 @@ exports.up = pgm => {
         WHERE instructors.email = $2;
       RETURN token_information::jwt_token;
     END;
-  `);
-  pgm.sql("GRANT EXECUTE ON FUNCTION SIGNUP_INSTRUCTOR(name TEXT, email TEXT, password TEXT) TO anonymous")
+  `
+  );
+  pgm.sql(
+    "GRANT EXECUTE ON FUNCTION SIGNUP_INSTRUCTOR(name TEXT, email TEXT, password TEXT) TO anonymous"
+  );
 
-  pgm.createFunction("signin_instructor", [
-    { mode: "IN", name: "email", type: "text", default: null },
-    { mode: "IN", name: "password", type: "text", default: null }
-  ], {
-    returns: "jwt_token",
-    language: "plpgsql",
-    replace: true
-  },`
+  pgm.createFunction(
+    "signin_instructor",
+    [
+      { mode: "IN", name: "email", type: "text", default: null },
+      { mode: "IN", name: "password", type: "text", default: null }
+    ],
+    {
+      returns: "jwt_token",
+      language: "plpgsql",
+      replace: true
+    },
+    `
     DECLARE
       token_information jwt_token;
     BEGIN
@@ -57,11 +68,14 @@ exports.up = pgm => {
         AND instructors.password = crypt($2, instructors.password);
     RETURN token_information::jwt_token;
   END;
-  `);
-  pgm.sql("GRANT EXECUTE ON FUNCTION SIGNIN_INSTRUCTOR(email TEXT, password TEXT) TO anonymous");
+  `
+  );
+  pgm.sql(
+    "GRANT EXECUTE ON FUNCTION SIGNIN_INSTRUCTOR(email TEXT, password TEXT) TO anonymous"
+  );
 
   pgm.createTable("instructors", {
-    id: { type: "serial", notNull: true, primaryKey: true},
+    id: { type: "serial", notNull: true, primaryKey: true },
     createdAt: {
       type: "timestamp",
       notNull: true,
@@ -77,7 +91,7 @@ exports.up = pgm => {
   });
 
   pgm.createTable("locations", {
-    id: { type: "serial", notNull: true, primaryKey: true},
+    id: { type: "serial", notNull: true, primaryKey: true },
     code: { type: "varchar", notNull: true },
     name: { type: "varchar", notNull: true }
   });
@@ -97,7 +111,7 @@ exports.up = pgm => {
   pgm.createIndex("instructor_locations", ["instructorId", "locationId"]);
 
   pgm.createTable("aircraft", {
-    id: { type: "serial", notNull: true, primaryKey: true},
+    id: { type: "serial", notNull: true, primaryKey: true },
     name: { type: "varchar", notNull: true }
   });
 
@@ -112,7 +126,7 @@ exports.up = pgm => {
   pgm.createIndex("location_aircraft", ["locationId", "aircraftId"]);
 
   pgm.createTable("students", {
-    id: { type: "serial", notNull: true, primaryKey: true},
+    id: { type: "serial", notNull: true, primaryKey: true },
     createdAt: {
       type: "timestamp",
       notNull: true,
@@ -128,13 +142,15 @@ exports.up = pgm => {
   });
 
   pgm.createTable("jumps", {
-    id: { type: "serial", notNull: true, primaryKey: true},
+    id: { type: "serial", notNull: true, primaryKey: true },
     createdAt: {
       type: "timestamp",
       notNull: true,
       default: pgm.func("current_timestamp")
     },
     studentId: { type: "integer", references: "students(id)", notNull: true },
+    jumpNumber: { type: "integer", notNull: true },
+    diveFlowNumber: { type: "integer", notNull: true },
     instructorId: {
       type: "integer",
       references: "instructors(id)",
@@ -152,8 +168,12 @@ exports.up = pgm => {
   pgm.createIndex("jumps", "aircraftId");
   pgm.createIndex("jumps", "createdAt");
 
-  pgm.sql("GRANT SELECT ON ALL TABLES IN SCHEMA public TO instructor");
-  pgm.sql("GRANT INSERT, UPDATE ON students, students_id_seq, jumps, jumps_id_seq TO instructor");
+  pgm.sql(
+    "GRANT SELECT ON ALL TABLES IN SCHEMA public TO instructor, anonymous"
+  );
+  pgm.sql(
+    "GRANT INSERT, UPDATE ON students, students_id_seq, jumps, jumps_id_seq TO instructor"
+  );
   pgm.sql("GRANT UPDATE ON students_id_seq, jumps_id_seq TO instructor");
 };
 
@@ -166,15 +186,25 @@ exports.down = pgm => {
   pgm.dropTable("aircraft", { ifExists: true });
   pgm.dropTable("instructors", { ifExists: true });
   pgm.dropExtension("pgcrypto");
-  pgm.dropFunction("signin_instructor", [
-    { mode: "IN", name: "email", type: "text", default: null },
-    { mode: "IN", name: "password", type: "text", default: null }
-  ], { ifExists: true })
-  pgm.dropFunction("signup_instructor", [
-    { mode: "IN", name: "name", type: "text", default: null },
-    { mode: "IN", name: "email", type: "text", default: null },
-    { mode: "IN", name: "password", type: "text", default: null }    
-  ], { ifExists: true});
+  pgm.dropFunction(
+    "signin_instructor",
+    [
+      { mode: "IN", name: "email", type: "text", default: null },
+      { mode: "IN", name: "password", type: "text", default: null }
+    ],
+    { ifExists: true }
+  );
+  pgm.dropFunction(
+    "signup_instructor",
+    [
+      { mode: "IN", name: "name", type: "text", default: null },
+      { mode: "IN", name: "email", type: "text", default: null },
+      { mode: "IN", name: "password", type: "text", default: null }
+    ],
+    { ifExists: true }
+  );
+  pgm.sql("REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM instructor");
+  pgm.sql("REVOKE ALL ON ALL TABLES IN SCHEMA public FROM instructor");
   pgm.dropRole("instructor", { ifExists: true });
   pgm.dropRole("anonymous", { ifExists: true });
   pgm.dropType("jwt_token");

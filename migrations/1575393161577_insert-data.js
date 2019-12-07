@@ -26,9 +26,9 @@ exports.up = pgm => {
   `);
   pgm.sql(`
     INSERT INTO jumps
-      ("studentId", "instructorId", "locationId", "aircraftId", "exitAltitude", "deploymentAltitude", "logEntry")
+      ("studentId", "jumpNumber", "diveFlowNumber", "instructorId", "locationId", "aircraftId", "exitAltitude", "deploymentAltitude", "logEntry")
     VALUES
-      (1, 1, 1, 1, 14000, 5500, 'Did pretty good')
+      (1, 2, 1, 1, 1, 1, 14000, 5500, 'Did pretty good')
   `);
 };
 

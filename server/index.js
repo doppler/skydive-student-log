@@ -8,10 +8,10 @@ const PORT = 4000;
 const postgraphileOptions = {
   subscriptions: true,
   watchPg: true,
-  // jwtTokenIdentifier: "public.jwt_token",
+  jwtTokenIdentifier: "public.jwt_token",
   jwtPgTypeIdentifier: "public.jwt_token",
   jwtSecret: "foobar",
-  defaultRole: "anonymous",
+  pgDefaultRole: "anonymous",
   dynamicJson: true,
   setofFunctionsContainNulls: false,
   ignoreRBAC: false,
@@ -30,9 +30,9 @@ const postgraphileOptions = {
   },
   enableQueryBatching: true,
   legacyRelations: "omit",
-  pgSettings(req) {
-    /* TODO */
-  }
+  // pgSettings(req) {
+  //   /* TODO */
+  // }
 };
 
 app.use(postgraphile(process.env.DATABASE_URL, "public", postgraphileOptions));
