@@ -16,7 +16,8 @@
         "--user-data-dir=/tmp/chrome-debug",
         "--remote-debugging-port=9222",
         "--disable-background-networking"
-      ]
+      ],
+      "userDataDir": false
     }
   ]
 }
