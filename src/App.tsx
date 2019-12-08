@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,34 +6,43 @@ import {
   Redirect,
   Link
 } from "react-router-dom";
+import { AuthContext, AuthProvider } from "./AuthContext";
 import StudentRouter from "./components/StudentRouter";
 import Login from "./components/Login";
 
 import "./App.css";
 
 const App: React.FC = () => {
+  // const jwtToken = window.sessionStorage.getItem("jwtToken");
+  // const [jwtToken, setJwtToken] = React.useState("");
+  // useEffect(() => {
+  //   setJwtToken(window.sessionStorage.getItem("jwtToken") || "");
+  // }, [jwtToken]);
   return (
     <Router>
-      <Switch>
-        <Route path="/students">
-          <StudentRouter />
-        </Route>
-        <PrivateRoute path="/settings">
-          <Settings />
-        </PrivateRoute>
-        <PrivateRoute path="/instructors">
-          <Instructors />
-        </PrivateRoute>
-        <PrivateRoute path="/aircraft">
-          <Aircraft />
-        </PrivateRoute>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
+      <AuthProvider>
+        <Header />
+        <Switch>
+          <Route path="/students">
+            <StudentRouter />
+          </Route>
+          <PrivateRoute path="/settings">
+            <Settings />
+          </PrivateRoute>
+          <PrivateRoute path="/instructors">
+            <Instructors />
+          </PrivateRoute>
+          <PrivateRoute path="/aircraft">
+            <Aircraft />
+          </PrivateRoute>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </AuthProvider>
     </Router>
   );
 };
@@ -43,7 +52,7 @@ const fakeAuth = {
 };
 
 interface IPrivateRouteProps {
-  children: ReactNode;
+  children: React.ReactNode;
   path: string;
 }
 
@@ -83,6 +92,16 @@ const Home: React.FC = () => (
     </div>
   </div>
 );
+
+const Header: React.FC = () => {
+  const [{ jwtToken }] = useContext(AuthContext);
+  return (
+    <div>
+      <code>jwtToken: {jwtToken}</code>
+      <Login />
+    </div>
+  );
+};
 
 const Instructors: React.FC = () => <div>Instructors</div>;
 

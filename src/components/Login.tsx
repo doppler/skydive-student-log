@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import AuthContext from "../AuthContext";
 import { useAsyncFunction, sendGrapQLMutation } from "../graphql-utils";
 const Login: React.FC = () => {
-  const [login, setLogin] = React.useState({ email: "", password: "" });
+  const [login, setLogin] = React.useState({
+    email: "doppler@gmail.com",
+    password: "password"
+  });
   const [res, signinInstructor] = useAsyncFunction(sendGrapQLMutation);
-
+  const [state, dispatch] = useContext(AuthContext);
+  const { jwtToken } = state;
+  console.log({ jwtToken });
+  const [signedIn, setSignedIn] = React.useState(jwtToken !== "");
   const changeInputValue = (event: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
     setLogin(prevState => {
@@ -30,6 +37,14 @@ const Login: React.FC = () => {
     signinInstructor(signinIntructorQuery(login));
   };
 
+  useEffect(() => {
+    const { data } = res;
+    if (!signedIn && data && data.signinInstructor) {
+      dispatch({ type: "SIGN_IN", payload: data.signinInstructor.jwtToken });
+      setSignedIn(true);
+    }
+  }, [res, signedIn, dispatch]);
+
   const StatusDisplay = () =>
     res.loading ? (
       <div>Logging in...</div>
@@ -43,31 +58,32 @@ const Login: React.FC = () => {
       <div>huh</div>
     );
 
-  return (
+  const signOut = () => {
+    dispatch({ type: "SIGN_OUT" });
+    setSignedIn(false);
+  };
+
+  return signedIn ? (
+    <button onClick={signOut}>Sign out</button>
+  ) : (
     <form onSubmit={onSubmit}>
-      <div>
-        <input
-          onChange={changeInputValue}
-          name="email"
-          autoComplete="off"
-          placeholder="email address"
-          required
-        />
-      </div>
-      <div>
-        <input
-          onChange={changeInputValue}
-          name="password"
-          type="password"
-          placeholder="password"
-          required
-        />
-      </div>
-      <div>
-        <button type="submit">Log in</button>
-      </div>
-      <code>{JSON.stringify(login, null, 2)}</code>
-      <StatusDisplay />
+      <input
+        onChange={changeInputValue}
+        value={login.email}
+        name="email"
+        autoComplete="off"
+        placeholder="email address"
+        required
+      />
+      <input
+        onChange={changeInputValue}
+        value={login.password}
+        name="password"
+        type="password"
+        placeholder="password"
+        required
+      />
+      <button type="submit">Log in</button>
     </form>
   );
 };

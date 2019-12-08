@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouteMatch } from "react-router-dom";
 import {
   useAsyncFunction,
@@ -102,6 +102,10 @@ const EditStudentForm: React.FC<StudentProps> = (props: StudentProps) => {
       : createStudentQuery(student);
     saveStudentToGraphQLStore(query);
   };
+
+  useEffect(() => {
+    console.log(res);
+  }, [res]);
 
   const StatusDisplay = () =>
     res.loading ? (
