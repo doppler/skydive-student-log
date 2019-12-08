@@ -29,7 +29,7 @@ const postgraphileOptions = {
     return true;
   },
   enableQueryBatching: true,
-  legacyRelations: "omit",
+  legacyRelations: "omit"
   // pgSettings(req) {
   //   /* TODO */
   // }
@@ -45,4 +45,3 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`api-server listening on port ${PORT}`));
-

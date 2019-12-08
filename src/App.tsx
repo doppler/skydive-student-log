@@ -7,6 +7,7 @@ import {
   Link
 } from "react-router-dom";
 import StudentRouter from "./components/StudentRouter";
+import Login from "./components/Login";
 
 import "./App.css";
 
@@ -82,8 +83,6 @@ const Home: React.FC = () => (
     </div>
   </div>
 );
-
-const Login: React.FC = () => <div>Login</div>;
 
 const Instructors: React.FC = () => <div>Instructors</div>;
 
