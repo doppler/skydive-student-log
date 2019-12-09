@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useRouteMatch, useHistory } from "react-router-dom";
-import { useGraphQLQuery } from "../graphql-utils"
+import { useGraphQLQuery } from "../graphql-utils";
 
 const fetchStudentAndJumpsQuery = (id: number) => `
   query fetchStudentQuery {
@@ -15,6 +15,7 @@ const fetchStudentAndJumpsQuery = (id: number) => `
       uspaNumber
       jumps(orderBy: CREATED_AT_DESC) {
         nodes {
+          id
           createdAt
           deploymentAltitude
           exitAltitude
@@ -40,6 +41,15 @@ const ShowStudent: React.FC = () => {
   const { loading, error, data } = useGraphQLQuery(
     fetchStudentAndJumpsQuery(params.studentId)
   );
+
+  const [student, setStudent] = useState({});
+  useEffect(() => {
+    if (data && data.student && data.student.id) {
+      data.student.jumps = data.student.jumps.nodes;
+      setStudent(data.student);
+    }
+  }, [data, student]);
+
   if (loading) return <div>Loading...</div>;
   if (error) {
     console.error(error);
@@ -51,8 +61,10 @@ const ShowStudent: React.FC = () => {
   }
   return (
     <div>
-      <button onClick={() => history.push(`${match.url}/edit`)}>Edit Student</button>
-      <code>{JSON.stringify(data, null, 2)}</code>
+      <button onClick={() => history.push(`${match.url}/edit`)}>
+        Edit Student
+      </button>
+      <code>{JSON.stringify(student, null, 2)}</code>
     </div>
   );
 };
