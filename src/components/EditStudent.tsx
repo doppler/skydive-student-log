@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 import {
-  useAsyncFunction,
-  sendGrapQLMutation,
   useGraphQLQuery,
-  getIdFromResult
+  getIdFromResult,
+  useGraphQLMutation
 } from "../graphql-utils";
 
 export interface IStudent {
@@ -86,7 +85,10 @@ type StudentProps = {
 
 const EditStudentForm: React.FC<StudentProps> = (props: StudentProps) => {
   const [student, setStudent] = useState(props.student);
-  const [res, saveStudentToGraphQLStore] = useAsyncFunction(sendGrapQLMutation);
+  // const [res, saveStudentToGraphQLStore] = useAsyncFunction(sendGrapQLMutation);
+  const [res, callApi] = useGraphQLMutation(
+    student.id ? updateStudentQuery(student) : createStudentQuery(student)
+  );
 
   const changeInputValue = (event: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
@@ -97,15 +99,8 @@ const EditStudentForm: React.FC<StudentProps> = (props: StudentProps) => {
 
   const saveStudent = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const query = student.id
-      ? updateStudentQuery(student)
-      : createStudentQuery(student);
-    saveStudentToGraphQLStore(query);
+    callApi();
   };
-
-  useEffect(() => {
-    console.log(res);
-  }, [res]);
 
   const StatusDisplay = () =>
     res.loading ? (
@@ -114,9 +109,9 @@ const EditStudentForm: React.FC<StudentProps> = (props: StudentProps) => {
       <div>
         <code>{res.error}</code>
       </div>
-    ) : res.complete ? (
+    ) : res.data ? (
       <div>
-        <code>Saved</code>
+        <code>{JSON.stringify(res.data)}</code>
       </div>
     ) : (
       <div>...</div>

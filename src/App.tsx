@@ -47,9 +47,9 @@ const App: React.FC = () => {
   );
 };
 
-const fakeAuth = {
-  isAuthenticated: window.sessionStorage.getItem("jwtToken")
-};
+// const fakeAuth = {
+//   isAuthenticated: window.sessionStorage.getItem("jwtToken")
+// };
 
 interface IPrivateRouteProps {
   children: React.ReactNode;
@@ -57,11 +57,12 @@ interface IPrivateRouteProps {
 }
 
 const PrivateRoute = ({ children, ...rest }: IPrivateRouteProps) => {
+  const { token } = useAuth();
   return (
     <Route
       {...rest}
       render={({ location }: any) =>
-        fakeAuth.isAuthenticated ? (
+        token ? (
           children
         ) : (
           <Redirect
@@ -96,7 +97,6 @@ const Home: React.FC = () => {
   ) : null;
 };
 const Header: React.FC = () => {
-  const { token } = useAuth();
   return (
     <div>
       <Login />
