@@ -14,7 +14,8 @@ exports.up = pgm => {
   pgm.createType("jwt_token", {
     role: "text",
     instructorId: "integer",
-    name: "text"
+    name: "text",
+    exp: "bigint"
   });
 
   pgm.createFunction(
@@ -61,7 +62,7 @@ exports.up = pgm => {
     DECLARE
       token_information jwt_token;
     BEGIN
-      SELECT 'instructor', instructors.id as id, instructors.name as name
+      SELECT 'instructor', instructors.id as id, instructors.name as name, extract(epoch from (now() + interval '1 day'))
       INTO token_information
       FROM instructors
       WHERE instructors.email = $1
