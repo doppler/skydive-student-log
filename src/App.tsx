@@ -67,7 +67,7 @@ const PrivateRoute = ({ children, ...rest }: IPrivateRouteProps) => {
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/",
               state: { from: location }
             }}
           />
@@ -97,8 +97,10 @@ const Home: React.FC = () => {
   ) : null;
 };
 const Header: React.FC = () => {
+  const { user } = useAuth();
   return (
     <div>
+      {user ? <span>Logged in as {user.name}</span> : null}
       <Login />
     </div>
   );
