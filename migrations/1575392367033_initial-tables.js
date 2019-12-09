@@ -89,6 +89,7 @@ exports.up = pgm => {
     uspaNumber: { type: "integer" },
     uspaLicense: { type: "varchar" }
   });
+  pgm.sql("GRANT SELECT ON instructors TO anonymous");
 
   pgm.createTable("locations", {
     id: { type: "serial", notNull: true, primaryKey: true },
@@ -168,9 +169,7 @@ exports.up = pgm => {
   pgm.createIndex("jumps", "aircraftId");
   pgm.createIndex("jumps", "createdAt");
 
-  pgm.sql(
-    "GRANT SELECT ON ALL TABLES IN SCHEMA public TO instructor, anonymous"
-  );
+  pgm.sql("GRANT SELECT ON ALL TABLES IN SCHEMA public TO instructor");
   pgm.sql(
     "GRANT INSERT, UPDATE ON students, students_id_seq, jumps, jumps_id_seq TO instructor"
   );
