@@ -3,7 +3,9 @@
 exports.shorthands = undefined;
 
 exports.up = pgm => {
-  pgm.sql("SELECT SIGNUP_INSTRUCTOR('David Rose', 'doppler@gmail.com', 'billybutt')");
+  pgm.sql(
+    "SELECT SIGNUP_INSTRUCTOR('David Rose', 'doppler@gmail.com', 'password')"
+  );
   pgm.sql(`
     INSERT INTO locations
       ("code", "name") VALUES ('spaceland-atlanta', 'Spaceland Atlanta')
