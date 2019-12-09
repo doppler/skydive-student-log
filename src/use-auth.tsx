@@ -1,6 +1,6 @@
 /* @ts-ignore */
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
@@ -16,7 +16,7 @@ export const useAuth = () => useContext(AuthContext);
 
 const useProvideAuth = () => {
   const history = useHistory();
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState("");
   const signin = (email: string, password: string) => {
     return axios
       .post("/graphql", {
@@ -36,9 +36,14 @@ const useProvideAuth = () => {
 
   const signout = () => {
     window.sessionStorage.removeItem("jwtToken");
-    setToken(null);
+    setToken("");
     history.push("/");
   };
+
+  useEffect(() => {
+    const jwtToken = window.sessionStorage.getItem("jwtToken") || "";
+    setToken(jwtToken);
+  }, []);
 
   return { signin, signout, token };
 };
