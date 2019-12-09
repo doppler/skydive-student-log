@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import axios from "axios";
-import AuthContext from "./AuthContext";
+import { useAuth } from "./use-auth";
 
 export type UseGraphQLFetchValue = {
   loading: boolean;
@@ -10,16 +10,16 @@ export type UseGraphQLFetchValue = {
 };
 
 export const useGraphQLQuery = (query: string) => {
-  const [{ jwtToken }] = useContext(AuthContext);
-  console.log({ jwtToken });
+  const { token } = useAuth();
   const [res, setRes] = React.useState<UseGraphQLFetchValue>({
     loading: true,
     error: null,
     data: null,
     complete: false
   });
-  if (jwtToken !== "")
-    axios.defaults.headers.post["Authorization"] = `Bearer ${jwtToken}`;
+
+  if (token) axios.defaults.headers.post["Authorization"] = `Bearer ${token}`;
+  else delete axios.defaults.headers.post["Authorization"];
 
   React.useEffect(() => {
     setRes({ loading: true, error: null, data: null, complete: false });
@@ -133,7 +133,12 @@ export const sendGrapQLMutation = async (query: string) => {
   return { data, errors };
 };
 
+// const useGraphQLMutation = (query: string) => {
+//   const { token } = useAuth();
+// };
+
 export const getIdFromResult = (data: any): number => {
+  console.log(data);
   // data looks like this
   // {"data":{"__typename":"Mutation","createStudent":{"student":{"id":23}}}}
   const resultObjKey: string = Object.keys(data).filter(k =>

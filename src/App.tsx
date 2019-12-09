@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,7 +6,7 @@ import {
   Redirect,
   Link
 } from "react-router-dom";
-import { AuthContext, AuthProvider } from "./AuthContext";
+import { useAuth, AuthProvider } from "./use-auth";
 import StudentRouter from "./components/StudentRouter";
 import Login from "./components/Login";
 
@@ -23,9 +23,9 @@ const App: React.FC = () => {
       <AuthProvider>
         <Header />
         <Switch>
-          <Route path="/students">
+          <PrivateRoute path="/students">
             <StudentRouter />
-          </Route>
+          </PrivateRoute>
           <PrivateRoute path="/settings">
             <Settings />
           </PrivateRoute>
@@ -48,7 +48,7 @@ const App: React.FC = () => {
 };
 
 const fakeAuth = {
-  isAuthenticated: false
+  isAuthenticated: window.sessionStorage.getItem("jwtToken")
 };
 
 interface IPrivateRouteProps {
@@ -75,29 +75,30 @@ const PrivateRoute = ({ children, ...rest }: IPrivateRouteProps) => {
     />
   );
 };
-const Home: React.FC = () => (
-  <div>
-    <Link to="/">Home</Link>
-    <div>
-      <Link to="/students">Students</Link>
-    </div>
-    <div>
-      <Link to="/instructors">Instructors</Link>
-    </div>
-    <div>
-      <Link to="/aircraft">Aircraft</Link>
-    </div>
-    <div>
-      <Link to="/settings">Settings</Link>
-    </div>
-  </div>
-);
 
+const Home: React.FC = () => {
+  const { token } = useAuth();
+  return token ? (
+    <div>
+      <div>
+        <Link to="/students">Students</Link>
+      </div>
+      <div>
+        <Link to="/instructors">Instructors</Link>
+      </div>
+      <div>
+        <Link to="/aircraft">Aircraft</Link>
+      </div>
+      <div>
+        <Link to="/settings">Settings</Link>
+      </div>
+    </div>
+  ) : null;
+};
 const Header: React.FC = () => {
-  const [{ jwtToken }] = useContext(AuthContext);
+  const { token } = useAuth();
   return (
     <div>
-      <code>jwtToken: {jwtToken}</code>
       <Login />
     </div>
   );
